@@ -1,0 +1,71 @@
+<app-patient-header></app-patient-header>
+
+<div>
+  <mat-horizontal-stepper linear #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel><b>Adja meg a lelet nevét</b></ng-template>
+          <mat-form-field>
+            <input matInput placeholder="Lelet neve" formControlName="firstCtrl" required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperNext>Következő</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel><b>Válassza ki a feltöltendő leletet</b></ng-template>
+          <button type="button" mat-flat-button color="accent" (click)="imgFileInput.click()">Lelet hozzáadás</button>
+          <input hidden type="file" #imgFileInput (change)="onFileSelected($event)" accept=".pdf" formControlName="secondCtrl"/>
+          <mat-card *ngIf=this.selectedFile>{{this.selectedFile.name}}</mat-card>
+          <div>
+            <button mat-button matStepperPrevious >Vissza</button>
+            <button mat-button matStepperNext>Következő</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="thirdFormGroup">
+        <form [formGroup]="thirdFormGroup">
+          <ng-template matStepLabel><b>Adjon hozzá megjegyzést</b></ng-template>
+          <mat-form-field>
+            <textarea matInput placeholder="Megjegyzés" rows="5" formControlName="thirdCtrl" maxlength="200"></textarea>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Vissza</button>
+            <button mat-button matStepperNext>Következő</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel><b>Feltöltés</b></ng-template>
+        <button type="button" mat-flat-button color="primary" (click)="onUpload();stepper.reset();">Feltöltés</button>
+        <div>
+          <button mat-button matStepperPrevious>Vissza</button>
+          <button mat-button (click)="stepper.reset();resetPdf();">Visszaállítás</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+</div>
+
+    <mat-list >
+          <h2 mat-subheader class="titleOfList">Leletek</h2>
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
+          <div *ngIf="!isLoading">
+                <mat-list-item *ngFor="let pdf of pdfs" >
+
+                    <mat-icon matListIcon color="primary">picture_as_pdf</mat-icon>
+                    <p matLine>
+                      <span ><span class="titleOfList">Lelet neve:</span> {{pdf.name}}</span>
+                      <span><span class="title">Feltöltés ideje:</span> {{pdf.uploaded | date:"yyyy.MM.dd"}} </span>
+                      <span><span class="title">Megjegyzés:</span> {{pdf.comment}} </span>
+                    </p>
+                    <a class="nostyle" mat-raised-button target="_blank" rel="noopener noreferrer" [href]="pdf.pdfURL" color="primary" >Megtekintés</a>
+                    <button mat-raised-button color="warn" (click)="onDelete(pdf.id)">Törlés</button>
+                      <mat-divider></mat-divider>
+                  </mat-list-item>
+                  <mat-list-item>
+                      <p *ngIf="!pdfs.length">Még nincs egyetlen lelet sem feltöltve!</p>
+                  </mat-list-item>
+          </div>
+    </mat-list>

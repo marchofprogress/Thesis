@@ -1,0 +1,66 @@
+    <mat-card>
+        <h3>Új páciens felvétele</h3>
+        <form ngNativeValidate  (submit)="onAddPatient(patientForm)" #patientForm="ngForm">
+            <mat-form-field>
+                <input
+                    matInput
+                    type="text"
+                    name="name"
+                    ngModel
+                    required
+                    placeholder="Név"
+                >
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    matInput
+                    type="number"
+                    name="taj"
+                    ngModel
+                    required
+                    placeholder="Taj"
+                >
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    matInput
+                    name="dateOfBirth"
+                    ngModel
+                    required
+                    placeholder="Születési dátum"
+                    [matDatepicker]="picker"
+                >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit">Mentés</button>
+        </form>
+    </mat-card>
+
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-card>
+    <h3>Páciensek</h3>
+    <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Keresés">
+    </mat-form-field>
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort *ngIf="!isLoading" >
+            <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Név </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="taj">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> TAJ </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.taj}} </mat-cell>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="dateOfBirth">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Születési dátum </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.dateOfBirth | date:"yyyy.MM.dd" }} </mat-cell>
+                  </ng-container>
+                
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onActiveData(row, $event)" style="cursor:pointer;"></mat-row>
+    </mat-table>
+</mat-card>
+    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>

@@ -1,0 +1,41 @@
+<app-patient-header></app-patient-header>
+<mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+         Auto vérkép vizsgálat
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort *ngIf="!isLoading" >
+  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </mat-header-cell>
+    <mat-cell *matCellDef="let element; let i = index"  [style.color]="getStyle(i, element[column], column, templates)"> {{element[column]}} </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+</mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Általános vizsgálat
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-table [dataSource]="dataSource1" class="mat-elevation-z8" matSort *ngIf="!isLoading" >
+  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns1">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </mat-header-cell>
+    <mat-cell *matCellDef="let element; let i = index" [style.color]="getStyle(i, element[column], column, templates1)"> {{element[column]}} </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns1;"></mat-row>
+</mat-table>
+</mat-expansion-panel>
+</mat-accordion>

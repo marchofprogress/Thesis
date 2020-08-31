@@ -1,0 +1,22 @@
+<app-patient-header></app-patient-header>
+<h3>Auto vérkép vizsg. értékek</h3>
+<mat-form-field>
+  <mat-select placeholder="Válasszon értéket" (change)="eventSelection(this.displayedColumns, this.templates,$event.value)">
+    <mat-option *ngFor="let content of tempCopy" [value]="content.name" >
+      {{content.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<h3>Általános vizsg. értékek</h3>
+<mat-form-field>
+  <mat-select placeholder="Válasszon értéket" (change)="eventSelection(this.displayedColumns1, this.templates1,$event.value)">
+    <mat-option *ngFor="let content of tempCopy1" [value]="content.name" >
+      {{content.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="chart-container" style="position: relative; height: 50vh">
+    <canvas #first></canvas>
+</div>
